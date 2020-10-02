@@ -10,6 +10,7 @@ public class MainMenuController : MonoBehaviour
     void Start()
     {
         UpdateScore();
+        Cursor.lockState = CursorLockMode.Confined;
     }
     public int GetScore()
     {
@@ -23,5 +24,9 @@ public class MainMenuController : MonoBehaviour
     {
         PlayerPrefs.SetInt("HighScore", 0);
         UpdateScore();
+    }
+    public void EndApplication()
+    {
+        Application.Quit();
     }
 }
