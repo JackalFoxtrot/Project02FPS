@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde0d5c3642523546b3349439ee465dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startingSong: {fileID: 0}
 --- !u!82 &1402570481547764663
 AudioSource:
   m_ObjectHideFlags: 0
@@ -56,7 +57,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0
