@@ -8,6 +8,7 @@ public class Level01Controller : MonoBehaviour
 {
     [SerializeField] Text _currentScoreTextView;
     [SerializeField] GameObject _ingamePanel;
+    [SerializeField] GameObject _ingameDeathPanel;
 
     int _currentScore;
 
@@ -34,7 +35,10 @@ public class Level01Controller : MonoBehaviour
             {
                 PauseLevel();
             }
-            
+            if(_ingameDeathPanel.gameObject.activeSelf)
+            {
+                ExitLevel();
+            }
         }
     }
     public void ResumeLevel()
@@ -48,6 +52,12 @@ public class Level01Controller : MonoBehaviour
         UnlockCursor();
         UnhideCursor();
         _ingamePanel.SetActive(true);
+    }
+    public void PlayerDeath()
+    {
+        UnlockCursor();
+        UnhideCursor();
+        _ingameDeathPanel.SetActive(true);
     }
     public void ExitLevel()
     {

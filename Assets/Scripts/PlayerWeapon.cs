@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerWeapon : MonoBehaviour
 {
     public ParticleSystem _particleSystemToEnable;
+    public AudioClip _weaponNoise;
 
     private bool paused = false;
 
@@ -24,7 +25,8 @@ public class PlayerWeapon : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !paused)
         {
             Debug.Log("LeftMouseButtonPressed");
-            _particleSystemToEnable.Play();       
+            _particleSystemToEnable.Play();
+            AudioHelper.PlayClip2D(_weaponNoise, 0.5f);
         }
     }
     public void InvertPausedBool()

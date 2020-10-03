@@ -2112,7 +2112,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2011622391004844202, guid: 9bde88526ae0fcd488f83a1fc9ad60a1, type: 3}
       propertyPath: m_Name
-      value: AudioManager
+      value: BackgroundAudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 6728430016695104959, guid: 9bde88526ae0fcd488f83a1fc9ad60a1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2161,7 +2161,7 @@ PrefabInstance:
     - target: {fileID: 6860184571253705545, guid: 9bde88526ae0fcd488f83a1fc9ad60a1, type: 3}
       propertyPath: _startingSong
       value: 
-      objectReference: {fileID: 8300000, guid: 1dc8f29faae6d22488e1e5d9dd14db00, type: 3}
+      objectReference: {fileID: 8300000, guid: 3e44d0688118e864594ac997105871f9, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bde88526ae0fcd488f83a1fc9ad60a1, type: 3}
 --- !u!1 &2044092450
