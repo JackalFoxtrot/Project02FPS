@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] GameObject _gameObjectToTransform;
+    [SerializeField] Level01Controller _levelController;
     [SerializeField] ParticleSystem _particleSystemToEnable;
     [SerializeField] GameObject _bulletModel;
     [SerializeField] AudioClip _projectileSpawn;
@@ -14,6 +15,7 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] int _maximumHealth = 5;
     [SerializeField] int _currentHealth;
+    [SerializeField] int _scoreToAdd = 100;
 
     float _fireTimer = 3f;
     float _timeSinceLastFire = 0f;
@@ -64,6 +66,7 @@ public class EnemyController : MonoBehaviour
         if(_currentHealth <= 0)
         {
             AudioHelper.PlayClip2D(_enemyDeath, 0.25f);
+            _levelController.IncreaseScore(_scoreToAdd);
             DestroyObject();
         }
     }
