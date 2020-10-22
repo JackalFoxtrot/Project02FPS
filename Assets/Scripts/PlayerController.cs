@@ -32,15 +32,21 @@ public class PlayerController : MonoBehaviour
     bool isGrounded;
 
     [Header("Primary Ability Settings")]
+    [SerializeField] Text _weaponText;
+    [SerializeField] Slider _weaponBar;
     [SerializeField] ParticleSystem _particleSystemToEnable;
     [SerializeField] AudioClip _weaponNoise;
     [SerializeField] AudioClip _weaponHitNoise;
     [SerializeField] Camera _cameraController;
     [SerializeField] MouseLook _mouseLook;
     [SerializeField] Transform _rayOrigin;
-    [SerializeField] float _shootDistance = 10f;
+    [SerializeField] float _shootDistance = 22f;
     [SerializeField] GameObject _hitEffect;
     [SerializeField] int _weaponDamage = 1;
+    [SerializeField] float _weaponCoolDown = 1f;
+    [SerializeField] float _weaponTimer = 1f;
+    private float _timeToAdd;
+    private float _maxTime = 2f;
     [SerializeField] LayerMask hitLayers;
 
     RaycastHit objectHit;
@@ -59,12 +65,24 @@ public class PlayerController : MonoBehaviour
         }
         if(!paused)
         {
-            if (Input.GetMouseButtonDown(0))
+            _timeToAdd = Time.deltaTime;
+            _weaponTimer += Time.deltaTime;
+            if (_weaponTimer >= _weaponCoolDown)
+            {
+                _weaponTimer = _weaponCoolDown;
+            }
+            _weaponText.text = (int)(_weaponTimer*100) + " / " + 100;
+            _weaponBar.value = (_weaponTimer*100);
+            
+            if (Input.GetMouseButtonDown(0) && _weaponTimer >= _weaponCoolDown)
             {
                 Debug.Log("LeftMouseButtonPressed");
                 Shoot();
                 _particleSystemToEnable.Play();
                 AudioHelper.PlayClip2D(_weaponNoise, 0.25f);
+                _weaponTimer = 0f;
+                _weaponText.text = (int)(_weaponTimer * 100) + " / " + 100;
+                _weaponBar.value = (_weaponTimer * 100);
             }
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 

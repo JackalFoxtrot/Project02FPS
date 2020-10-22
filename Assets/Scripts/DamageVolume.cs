@@ -11,24 +11,35 @@ public class DamageVolume : MonoBehaviour
     
     private void OnTriggerStay(Collider other)
     {
-        PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-        _damageTimer += Time.deltaTime;
-        if(_damageTimer >= _damageCoolDown)
+        if(other.gameObject.CompareTag("Player"))
         {
-            playerController.DealDamage(_damageAmount);
-            Debug.Log(playerController.ToString() + " has entered " + this.ToString());
-            _damageTimer = 0;
+            PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
+            _damageTimer += Time.deltaTime;
+            if (_damageTimer >= _damageCoolDown)
+            {
+                playerController.DealDamage(_damageAmount);
+                Debug.Log(playerController.ToString() + " has entered " + this.ToString());
+                _damageTimer = 0;
+            }
         }
+        
         
     }
     private void OnTriggerEnter(Collider other)
-    {
-        PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-        playerController.DealDamage(_damageAmount);
-        Debug.Log(playerController.ToString() + " has entered " + this.ToString());
+    {   
+        if(other.gameObject.CompareTag("Player"))
+        {
+            PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
+            playerController.DealDamage(_damageAmount);
+            Debug.Log(playerController.ToString() + " has entered " + this.ToString());
+        }
+        
     }
     public void OnTriggerExit(Collider other)
     {
-        _damageTimer = 0;
+        if(other.gameObject.CompareTag("Player"))
+        {
+            _damageTimer = 0;
+        }
     }
 }

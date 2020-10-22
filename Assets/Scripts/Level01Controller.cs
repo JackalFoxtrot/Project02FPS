@@ -9,6 +9,7 @@ public class Level01Controller : MonoBehaviour
     [SerializeField] Text _currentScoreTextView;
     [SerializeField] GameObject _ingamePanel;
     [SerializeField] GameObject _ingameDeathPanel;
+    [SerializeField] GameObject _miniMapController;
 
     int _currentScore;
 
@@ -35,6 +36,14 @@ public class Level01Controller : MonoBehaviour
             {
                 ExitLevel();
             }
+        }
+        if(Input.GetKeyDown(KeyCode.Equals) || Input.GetKeyDown(KeyCode.Plus))
+        {
+            _miniMapController.GetComponent<Minimap>().ZoomIn();
+        }
+        if(Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.Underscore))
+        {
+            _miniMapController.GetComponent<Minimap>().ZoomOut();
         }
     }
     public void ResumeLevel()
