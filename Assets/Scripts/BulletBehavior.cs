@@ -8,6 +8,7 @@ public class BulletBehavior : MonoBehaviour
     [SerializeField] int _bulletDamage = 10;
     [SerializeField] PlayerController _playerController1;
     [SerializeField] LayerMask hitLayers;
+    [SerializeField] AudioClip _projectileHit;
 
     float _bulletDuration = 4;
 
@@ -39,10 +40,12 @@ public class BulletBehavior : MonoBehaviour
         if(playerController != null)
         {
             playerController.DealDamage(_bulletDamage);
+            AudioHelper.PlayClip2D(_projectileHit, 0.25f);
             DestroyBullet();
         }
         if(other.transform.tag == "Ground")
         {
+            AudioHelper.PlayClip2D(_projectileHit, 0.25f);
             DestroyBullet();
         }
         Debug.Log("Tag: " + other.transform.tag);

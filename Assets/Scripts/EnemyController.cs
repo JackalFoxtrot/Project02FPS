@@ -5,7 +5,12 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] GameObject _gameObjectToTransform;
+    [SerializeField] ParticleSystem _particleSystemToEnable;
     [SerializeField] GameObject _bulletModel;
+    [SerializeField] AudioClip _projectileSpawn;
+    [SerializeField] AudioClip _enemyDeath;
+    [SerializeField] AudioClip _enemyDamaged;
+    [SerializeField] AudioClip _enemyWeaponShot;
 
     [SerializeField] int _maximumHealth = 5;
     [SerializeField] int _currentHealth;
@@ -28,6 +33,7 @@ public class EnemyController : MonoBehaviour
             if(_timeSinceLastFire >= _fireTimer)
             {
                 _timeSinceLastFire = 0f;
+                AudioHelper.PlayClip2D(_enemyDeath, 0.25f);
                 SpawnBullet();
             }
        }
@@ -44,16 +50,20 @@ public class EnemyController : MonoBehaviour
         GameObject newBullet = GameObject.Instantiate(_bulletModel, spawnPosition, spawnRotation);
         newBullet.GetComponent<BulletBehavior>().enabled = true;
         newBullet.SetActive(true);
+        _particleSystemToEnable.Play();
+        AudioHelper.PlayClip2D(_projectileSpawn, 0.25f, 1.25f);
     }
 
     public void TakeDamage(int damage)
     {
         if(_currentHealth > 0)
         {
+            AudioHelper.PlayClip2D(_enemyDamaged, 0.25f);
             _currentHealth -= damage;
         }
         if(_currentHealth <= 0)
         {
+            AudioHelper.PlayClip2D(_enemyDeath, 0.25f);
             DestroyObject();
         }
     }

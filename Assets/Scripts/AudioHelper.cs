@@ -18,4 +18,19 @@ public static class AudioHelper
 
         return audioSource;
     }
+
+    public static AudioSource PlayClip2D(AudioClip clip, float volume, float length)
+    {
+        GameObject audioObject = new GameObject("2DAudio");
+        AudioSource audioSource = audioObject.AddComponent<AudioSource>();
+
+        audioSource.clip = clip;
+        audioSource.volume = volume;
+
+        audioSource.Play();
+
+        Object.Destroy(audioObject, length);
+
+        return audioSource;
+    }
 }

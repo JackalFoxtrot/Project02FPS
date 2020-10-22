@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public Level01Controller _level01Controller;
 
     [Header("Player Settings")]
+    [SerializeField] AudioClip _playerDamaged;
+    [SerializeField] AudioClip _playerDeath;
     private float baseSpeed = 12f;
     public float speed = 12f;
 
@@ -32,6 +34,7 @@ public class PlayerController : MonoBehaviour
     [Header("Primary Ability Settings")]
     [SerializeField] ParticleSystem _particleSystemToEnable;
     [SerializeField] AudioClip _weaponNoise;
+    [SerializeField] AudioClip _weaponHitNoise;
     [SerializeField] Camera _cameraController;
     [SerializeField] MouseLook _mouseLook;
     [SerializeField] Transform _rayOrigin;
@@ -107,8 +110,10 @@ public class PlayerController : MonoBehaviour
             if (objectHit.transform.tag == "Enemy")
             {
                 Debug.Log("You hit " + objectHit.transform.name + ": Tag: " + objectHit.transform.tag + ".");
-                _hitEffect.transform.position = objectHit.point + (objectHit.normal * 0.1f);
+                _hitEffect.transform.position = objectHit.point + (objectHit.normal * 0.2f);
+                Debug.Log(_hitEffect.transform.position);
                 _hitEffect.GetComponent<ParticleSystem>().Play();
+                AudioHelper.PlayClip2D(_weaponHitNoise, 0.25f);
                 objectHit.transform.gameObject.GetComponent<EnemyController>().TakeDamage(_weaponDamage);
             }
         }
@@ -123,6 +128,7 @@ public class PlayerController : MonoBehaviour
         {
             currentPlayerHealth -= damageAmount;
             _healthText.text = currentPlayerHealth + " / " + maxPlayerHealth;
+            AudioHelper.PlayClip2D(_playerDamaged, 0.25f);
         }
         else
         {
@@ -135,6 +141,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Player has Died.");
             InvertPausedBool();
             _mouseLook.InvertPausedBool();
+            AudioHelper.PlayClip2D(_playerDeath, 0.25f);
             _level01Controller.PlayerDeath();
         }
     }

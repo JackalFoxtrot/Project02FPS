@@ -351,6 +351,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 0
+  _projectileHit: {fileID: 8300000, guid: f2f194ca6a56b904293652b5d67e84a1, type: 3}
 --- !u!54 &75889590
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -508,7 +509,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 367168352}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!199 &153136866
 ParticleSystemRenderer:
@@ -5551,7 +5552,7 @@ Transform:
   m_LocalScale: {x: 0.2585226, y: 0.20893618, z: 0.124034405}
   m_Children: []
   m_Father: {fileID: 367168352}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &284123444
 MeshRenderer:
@@ -5785,7 +5786,6 @@ Transform:
   m_LocalPosition: {x: 0.483, y: -0.168, z: 0.573}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1952083502}
   - {fileID: 1543179120}
   - {fileID: 284123442}
   - {fileID: 1087103658}
@@ -6391,6 +6391,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameObjectToTransform: {fileID: 896020408}
   _bulletModel: {fileID: 75889584}
+  _projectileSpawn: {fileID: 8300000, guid: 5605700cda37b3549b95d48f40f35b59, type: 3}
+  _enemyDeath: {fileID: 8300000, guid: e47872bd76c4a4e45966e241aaa44063, type: 3}
+  _enemyDamaged: {fileID: 8300000, guid: e47872bd76c4a4e45966e241aaa44063, type: 3}
+  _enemyWeaponShot: {fileID: 8300000, guid: d4750e181b4dacd43ae97719552f3386, type: 3}
   _maximumHealth: 5
   _currentHealth: 0
 --- !u!1 &668647923
@@ -7198,6 +7202,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameObjectToTransform: {fileID: 896020408}
   _bulletModel: {fileID: 75889584}
+  _projectileSpawn: {fileID: 8300000, guid: 5605700cda37b3549b95d48f40f35b59, type: 3}
+  _enemyDeath: {fileID: 8300000, guid: e47872bd76c4a4e45966e241aaa44063, type: 3}
+  _enemyDamaged: {fileID: 8300000, guid: e47872bd76c4a4e45966e241aaa44063, type: 3}
+  _enemyWeaponShot: {fileID: 8300000, guid: d4750e181b4dacd43ae97719552f3386, type: 3}
   _maximumHealth: 5
   _currentHealth: 0
 --- !u!1 &911673086
@@ -7902,6 +7910,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1003290217}
   _level01Controller: {fileID: 494964066}
+  _playerDamaged: {fileID: 8300000, guid: 90f031dbfd536614cbc93e9d502a3111, type: 3}
+  _playerDeath: {fileID: 8300000, guid: 70eccd0aaf4e1554092e3bd2dc8bbabe, type: 3}
   speed: 12
   _healthText: {fileID: 6733039}
   _healthBar: {fileID: 707804963}
@@ -7916,6 +7926,7 @@ MonoBehaviour:
     m_Bits: 512
   _particleSystemToEnable: {fileID: 153136867}
   _weaponNoise: {fileID: 8300000, guid: 07014a5731fddb14fb768b7a51397eba, type: 3}
+  _weaponHitNoise: {fileID: 8300000, guid: 663efcb28eb52644697c51cced13471d, type: 3}
   _cameraController: {fileID: 869276847}
   _mouseLook: {fileID: 869276849}
   _rayOrigin: {fileID: 1165975580}
@@ -8195,7 +8206,7 @@ Transform:
   m_LocalScale: {x: 0.2585226, y: 0.20893618, z: 0.124034405}
   m_Children: []
   m_Father: {fileID: 367168352}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1087103660
 MeshRenderer:
@@ -8274,7 +8285,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 367168352}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1169157724
 GameObject:
@@ -8933,7 +8944,7 @@ Transform:
   m_LocalScale: {x: 0.2258, y: 0.18249, z: 0.6629796}
   m_Children: []
   m_Father: {fileID: 367168352}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1543179122
 MeshRenderer:
@@ -14364,12 +14375,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952083499}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.283, y: 1.0680002, z: 3.377}
+  m_LocalPosition: {x: 0.20000002, y: 6.8, z: 3.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1728194033}
-  m_Father: {fileID: 367168352}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1975401192
 GameObject:
