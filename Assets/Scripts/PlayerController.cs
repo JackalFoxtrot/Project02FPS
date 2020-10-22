@@ -5,21 +5,20 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public ParticleSystem _particleSystemToEnable;
-    public AudioClip _weaponNoise;
-    public MouseLook _mouseLook;
-    public Text _healthText;
-    public Slider _healthBar;
-
     private bool paused = false;
 
     public CharacterController controller;
     public Level01Controller _level01Controller;
 
+    [Header("Player Settings")]
     private float baseSpeed = 12f;
     public float speed = 12f;
+
+    public Text _healthText;
+    public Slider _healthBar;
     public float maxPlayerHealth = 100;
     public float currentPlayerHealth = 100;
+
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
 
@@ -29,6 +28,19 @@ public class PlayerController : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+
+    [Header("Primary Ability Settings")]
+    [SerializeField] ParticleSystem _particleSystemToEnable;
+    [SerializeField] AudioClip _weaponNoise;
+    [SerializeField] Camera _cameraController;
+    [SerializeField] MouseLook _mouseLook;
+    [SerializeField] Transform _rayOrigin;
+    [SerializeField] float _shootDistance = 10f;
+    [SerializeField] GameObject _hitEffect;
+    [SerializeField] int _weaponDamage = 1;
+    [SerializeField] LayerMask hitLayers;
+
+    RaycastHit objectHit;
 
     private void Start()
     {
@@ -47,6 +59,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("LeftMouseButtonPressed");
+                Shoot();
                 _particleSystemToEnable.Play();
                 AudioHelper.PlayClip2D(_weaponNoise, 0.25f);
             }
@@ -82,6 +95,28 @@ public class PlayerController : MonoBehaviour
             controller.Move(velocity * Time.deltaTime);
         } 
     }
+    void Shoot()
+    {
+        //calculate direction
+        Vector3 rayDirection = _cameraController.transform.forward;
+        //Cast debug ray
+        Debug.DrawRay(_rayOrigin.position, rayDirection * _shootDistance, Color.red, 1f);
+        //Do raycast
+        if (Physics.Raycast(_rayOrigin.position, rayDirection, out objectHit, _shootDistance, hitLayers))
+        {
+            if (objectHit.transform.tag == "Enemy")
+            {
+                Debug.Log("You hit " + objectHit.transform.name + ": Tag: " + objectHit.transform.tag + ".");
+                _hitEffect.transform.position = objectHit.point + (objectHit.normal * 0.1f);
+                _hitEffect.GetComponent<ParticleSystem>().Play();
+                objectHit.transform.gameObject.GetComponent<EnemyController>().TakeDamage(_weaponDamage);
+            }
+        }
+        else
+        {
+            Debug.Log("Miss.");
+        }
+    }
     public void DealDamage(float damageAmount)
     {
         if(currentPlayerHealth > 0 && currentPlayerHealth > damageAmount)
@@ -97,6 +132,7 @@ public class PlayerController : MonoBehaviour
         _healthBar.value = currentPlayerHealth;
         if(currentPlayerHealth == 0)
         {
+            Debug.Log("Player has Died.");
             InvertPausedBool();
             _mouseLook.InvertPausedBool();
             _level01Controller.PlayerDeath();
@@ -105,5 +141,17 @@ public class PlayerController : MonoBehaviour
     public void InvertPausedBool()
     {
         paused = !paused;
+        if (paused)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+    }
+    public bool GetPause()
+    {
+        return paused;
     }
 }
