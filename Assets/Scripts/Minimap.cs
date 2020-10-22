@@ -14,11 +14,8 @@ public class Minimap : MonoBehaviour
 
     public void Start()
     {
-        if(PlayerPrefs.GetFloat("CurrentZoom") >= _minZoom && PlayerPrefs.GetFloat("CurrentZoom") <= _maxZoom)
-        {
-            _currentZoom = PlayerPrefs.GetFloat("CurrentZoom");
-        }
-        camera.orthographicSize = _currentZoom;
+        camera.orthographicSize = PlayerPrefs.GetFloat("CurrentZoom");
+        ZoomParameterCheck();
     }
 
     void LateUpdate()

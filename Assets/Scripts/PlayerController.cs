@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         {
             currentPlayerHealth -= damageAmount;
             _healthText.text = currentPlayerHealth + " / " + maxPlayerHealth;
-            AudioHelper.PlayClip2D(_playerDamaged, 0.25f);
+            AudioHelper.PlayClip2D(_playerDamaged, 1f);
         }
         else
         {
@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Player has Died.");
             InvertPausedBool();
             _mouseLook.InvertPausedBool();
-            AudioHelper.PlayClip2D(_playerDeath, 0.25f);
+            AudioHelper.PlayClip2D(_playerDeath, 1f);
             _level01Controller.PlayerDeath();
         }
     }
