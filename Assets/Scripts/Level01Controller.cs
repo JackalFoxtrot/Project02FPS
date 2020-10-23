@@ -74,7 +74,6 @@ public class Level01Controller : MonoBehaviour
     }
     public void ExitLevel()
     {
-        CheckHighScore();
         SceneManager.LoadScene("MainMenu");
     }
     public void CheckHighScore()
@@ -94,6 +93,7 @@ public class Level01Controller : MonoBehaviour
         UnlockCursor();
         UnhideCursor();
         HideCrosshair();
+        CheckHighScore();
         _ingameVictoryPanel.SetActive(true);
     }
 
