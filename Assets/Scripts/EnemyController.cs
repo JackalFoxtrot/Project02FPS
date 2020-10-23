@@ -25,6 +25,7 @@ public class EnemyController : MonoBehaviour
     
     private void Awake()
     {
+        _timeSinceLastFire = _fireTimer * 0.65f;
         _currentHealth = _maximumHealth;
         if(this.gameObject.CompareTag("Boss"))
         {

@@ -70,6 +70,8 @@ MonoBehaviour:
   _enemyDeath: {fileID: 8300000, guid: e47872bd76c4a4e45966e241aaa44063, type: 3}
   _enemyDamaged: {fileID: 8300000, guid: e47872bd76c4a4e45966e241aaa44063, type: 3}
   _enemyWeaponShot: {fileID: 8300000, guid: d4750e181b4dacd43ae97719552f3386, type: 3}
+  _bulletPosition1: {fileID: 0}
+  _bulletPosition2: {fileID: 0}
   _maximumHealth: 5
   _currentHealth: 0
   _scoreToAdd: 100
@@ -270,7 +272,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 25
+  m_Radius: 35
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5470735943841271514
 MonoBehaviour:
@@ -292,6 +294,8 @@ MonoBehaviour:
   _enemyDeath: {fileID: 8300000, guid: e47872bd76c4a4e45966e241aaa44063, type: 3}
   _enemyDamaged: {fileID: 8300000, guid: e47872bd76c4a4e45966e241aaa44063, type: 3}
   _enemyWeaponShot: {fileID: 8300000, guid: d4750e181b4dacd43ae97719552f3386, type: 3}
+  _bulletPosition1: {fileID: 0}
+  _bulletPosition2: {fileID: 0}
   _maximumHealth: 5
   _currentHealth: 0
   _scoreToAdd: 100
@@ -520,7 +524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 10
-  _bulletDamage: 10
+  _bulletDamage: 5
   _playerController1: {fileID: 0}
   hitLayers:
     serializedVersion: 2
