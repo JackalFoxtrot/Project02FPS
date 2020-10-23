@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class Level01Controller : MonoBehaviour
 {
     [SerializeField] Text _currentScoreTextView;
+    [SerializeField] Text _currentMultiplierTextView;
     [SerializeField] GameObject _ingamePanel;
     [SerializeField] GameObject _ingameDeathPanel;
+    [SerializeField] GameObject _ingameVictoryPanel;
     [SerializeField] GameObject _miniMapController;
     [SerializeField] GameObject _crosshair;
     private int _scoreMultiplier = 1;
@@ -18,6 +20,7 @@ public class Level01Controller : MonoBehaviour
     private void Start()
     {
         ResumeLevel();
+        _currentMultiplierTextView.text = "Current Multiplier: " + _scoreMultiplier.ToString();
     }
 
     // Update is called once per frame
@@ -33,7 +36,7 @@ public class Level01Controller : MonoBehaviour
             {
                 PauseLevel();
             }
-            if(_ingameDeathPanel.gameObject.activeSelf)
+            if(_ingameDeathPanel.gameObject.activeSelf || _ingameVictoryPanel.gameObject.activeSelf)
             {
                 ExitLevel();
             }
@@ -71,17 +74,29 @@ public class Level01Controller : MonoBehaviour
     }
     public void ExitLevel()
     {
+        CheckHighScore();
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void CheckHighScore()
+    {
         int highScore = PlayerPrefs.GetInt("HighScore");
-        
-        if(_currentScore > highScore)
+
+        if (_currentScore > highScore)
         {
             PlayerPrefs.SetInt("HighScore", _currentScore);
             Debug.Log("New High Score: " + _currentScore);
         }
-
-        SceneManager.LoadScene("MainMenu");
     }
     
+    public void Victory()
+    {
+        Time.timeScale = 0;
+        UnlockCursor();
+        UnhideCursor();
+        HideCrosshair();
+        _ingameVictoryPanel.SetActive(true);
+    }
+
     public void IncreaseScore(int scoreIncrease)
     {
         _currentScore += (scoreIncrease * _scoreMultiplier);
@@ -90,10 +105,12 @@ public class Level01Controller : MonoBehaviour
     public void IncreaseMultiplier()
     {
         _scoreMultiplier++;
+        _currentMultiplierTextView.text = "Current Multiplier: " + _scoreMultiplier.ToString();
     }
     public void ResetMultiplier()
     {
         _scoreMultiplier = 1;
+        _currentMultiplierTextView.text = "Current Multiplier: " + _scoreMultiplier.ToString();
     }
 
     public void LockCursor()

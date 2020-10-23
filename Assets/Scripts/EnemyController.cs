@@ -12,6 +12,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] AudioClip _enemyDeath;
     [SerializeField] AudioClip _enemyDamaged;
     [SerializeField] AudioClip _enemyWeaponShot;
+    [SerializeField] GameObject _bulletPosition1;
+    [SerializeField] GameObject _bulletPosition2;
 
     [SerializeField] int _maximumHealth = 5;
     [SerializeField] int _currentHealth;
@@ -19,10 +21,16 @@ public class EnemyController : MonoBehaviour
 
     float _fireTimer = 3f;
     float _timeSinceLastFire = 0f;
+    private ParticleSystem particleSystem2;
     
     private void Awake()
     {
         _currentHealth = _maximumHealth;
+        if(this.gameObject.CompareTag("Boss"))
+        {
+            particleSystem2 = Instantiate(_particleSystemToEnable);
+        }
+        
     }
 
     private void OnTriggerStay(Collider other)
@@ -36,7 +44,17 @@ public class EnemyController : MonoBehaviour
             {
                 _timeSinceLastFire = 0f;
                 AudioHelper.PlayClip2D(_enemyDeath, 0.25f);
-                SpawnBullet();
+                if(this.gameObject.CompareTag("Boss"))
+                {
+                    Debug.Log("Boss");
+                    SpawnBullet(_bulletPosition1.transform, _bulletPosition2.transform);
+                }
+                else
+                {
+                    Debug.Log("Not a Boss");
+                    SpawnBullet();
+                }
+                
             }
        }
     }
@@ -56,6 +74,31 @@ public class EnemyController : MonoBehaviour
         AudioHelper.PlayClip2D(_projectileSpawn, 0.25f, 1.25f);
     }
 
+    private void SpawnBullet(Transform spawnPos1, Transform spawnPos2)
+    {
+        float spawnDistance = 2;
+        Vector3 enemyPosition = transform.position;
+        Vector3 spawnPosition = spawnPos1.position + transform.forward * spawnDistance;
+        Vector3 spawnPosition2 = spawnPos2.position + transform.forward * spawnDistance;
+
+        Quaternion spawnRotation = spawnPos1.rotation;
+        Quaternion spawnRotation2 = spawnPos2.rotation;
+
+        GameObject newBullet = GameObject.Instantiate(_bulletModel, spawnPosition, spawnRotation);
+        newBullet.GetComponent<BulletBehavior>().enabled = true;
+        newBullet.SetActive(true);
+        _particleSystemToEnable.Play();
+
+        GameObject newBullet2 = GameObject.Instantiate(_bulletModel, spawnPosition2, spawnRotation2);
+        newBullet2.GetComponent<BulletBehavior>().enabled = true;
+        newBullet2.SetActive(true);
+        
+        particleSystem2.transform.position = spawnPos2.position;
+        particleSystem2.Play();
+        
+        AudioHelper.PlayClip2D(_projectileSpawn, 0.25f, 1.25f);
+    }
+
     public void TakeDamage(int damage)
     {
         if(_currentHealth > 0)
@@ -68,6 +111,11 @@ public class EnemyController : MonoBehaviour
             AudioHelper.PlayClip2D(_enemyDeath, 0.25f);
             _levelController.IncreaseScore(_scoreToAdd);
             _levelController.IncreaseMultiplier();
+            if(this.CompareTag("Boss"))
+            {
+                _levelController.Victory();
+
+            }
             DestroyObject();
         }
     }

@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - EnemyProjectile
   - Shield
+  - Boss
   layers:
   - Default
   - TransparentFX

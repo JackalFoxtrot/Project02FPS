@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
         //Do raycast
         if (Physics.Raycast(_rayOrigin.position, rayDirection, out objectHit, _shootDistance, hitLayers))
         {
-            if (objectHit.transform.tag == "Enemy")
+            if (objectHit.transform.tag == "Enemy" || objectHit.transform.tag == "Boss")
             {
                 Debug.Log("You hit " + objectHit.transform.name + ": Tag: " + objectHit.transform.tag + ".");
                 _hitEffect.transform.position = objectHit.point + (objectHit.normal * 0.2f);
