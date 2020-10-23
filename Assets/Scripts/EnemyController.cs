@@ -67,6 +67,7 @@ public class EnemyController : MonoBehaviour
         {
             AudioHelper.PlayClip2D(_enemyDeath, 0.25f);
             _levelController.IncreaseScore(_scoreToAdd);
+            _levelController.IncreaseMultiplier();
             DestroyObject();
         }
     }

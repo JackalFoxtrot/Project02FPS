@@ -10,13 +10,14 @@ public class Level01Controller : MonoBehaviour
     [SerializeField] GameObject _ingamePanel;
     [SerializeField] GameObject _ingameDeathPanel;
     [SerializeField] GameObject _miniMapController;
+    [SerializeField] GameObject _crosshair;
+    private int _scoreMultiplier = 1;
 
     int _currentScore;
 
     private void Start()
     {
-        LockCursor();
-        HideCursor();
+        ResumeLevel();
     }
 
     // Update is called once per frame
@@ -48,14 +49,18 @@ public class Level01Controller : MonoBehaviour
     }
     public void ResumeLevel()
     {
+        Time.timeScale = 1;
         LockCursor();
         HideCursor();
+        UnhideCrosshair();
         _ingamePanel.SetActive(false);
     }
     public void PauseLevel()
     {
+        Time.timeScale = 0;
         UnlockCursor();
         UnhideCursor();
+        HideCrosshair();
         _ingamePanel.SetActive(true);
     }
     public void PlayerDeath()
@@ -79,8 +84,16 @@ public class Level01Controller : MonoBehaviour
     
     public void IncreaseScore(int scoreIncrease)
     {
-        _currentScore += scoreIncrease;
+        _currentScore += (scoreIncrease * _scoreMultiplier);
         _currentScoreTextView.text = "Current Score: " + _currentScore.ToString();
+    }
+    public void IncreaseMultiplier()
+    {
+        _scoreMultiplier++;
+    }
+    public void ResetMultiplier()
+    {
+        _scoreMultiplier = 1;
     }
 
     public void LockCursor()
@@ -99,5 +112,13 @@ public class Level01Controller : MonoBehaviour
     public void UnhideCursor()
     {
         Cursor.visible = true;
+    }
+    public void HideCrosshair()
+    {
+        _crosshair.SetActive(false);
+    }
+    public void UnhideCrosshair()
+    {
+        _crosshair.SetActive(true);
     }
 }

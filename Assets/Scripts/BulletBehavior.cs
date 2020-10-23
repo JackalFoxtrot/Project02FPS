@@ -34,6 +34,10 @@ public class BulletBehavior : MonoBehaviour
 
         _rb.AddForce(moveDirection);
     }
+    public void RotateBullet()
+    {
+        _moveSpeed = -_moveSpeed; 
+    }
     private void OnTriggerEnter(Collider other)
     {
         PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
@@ -48,7 +52,7 @@ public class BulletBehavior : MonoBehaviour
             AudioHelper.PlayClip2D(_projectileHit, 0.25f);
             DestroyBullet();
         }
-        Debug.Log("Tag: " + other.transform.tag);
+        //Debug.Log("Tag: " + other.transform.tag);
         
     }
     void DestroyBullet()

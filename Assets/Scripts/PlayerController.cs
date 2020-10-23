@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     private bool paused = false;
+    private float _timeToAdd;
+    private float baseSpeed = 12f;
 
     public CharacterController controller;
     public Level01Controller _level01Controller;
@@ -13,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [Header("Player Settings")]
     [SerializeField] AudioClip _playerDamaged;
     [SerializeField] AudioClip _playerDeath;
-    private float baseSpeed = 12f;
+    
     public float speed = 12f;
 
     public Text _healthText;
@@ -40,16 +42,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Camera _cameraController;
     [SerializeField] MouseLook _mouseLook;
     [SerializeField] Transform _rayOrigin;
-    [SerializeField] float _shootDistance = 22f;
+    [SerializeField] float _shootDistance = 24f;
     [SerializeField] GameObject _hitEffect;
     [SerializeField] int _weaponDamage = 1;
     [SerializeField] float _weaponCoolDown = 1f;
-    [SerializeField] float _weaponTimer = 1f;
-    private float _timeToAdd;
-    private float _maxTime = 2f;
+    [SerializeField] float _weaponTimer;
+    
     [SerializeField] LayerMask hitLayers;
-
     RaycastHit objectHit;
+
+    [Header("Secondary Ability Settings")]
+    [SerializeField] GameObject _shieldObject;
+    [SerializeField] Text _shieldText;
+    [SerializeField] Slider _shieldBar;
+    [SerializeField] float _shieldCoolDown = 1f;
+    [SerializeField] float _shieldTimer;
+    private bool _shieldActive = false;
+
 
     private void Start()
     {
@@ -63,27 +72,43 @@ public class PlayerController : MonoBehaviour
         {
             InvertPausedBool();
         }
-        if(!paused)
+        if (!paused)
         {
             _timeToAdd = Time.deltaTime;
-            _weaponTimer += Time.deltaTime;
+            _weaponTimer += _timeToAdd;
+            _shieldTimer += _timeToAdd;
             if (_weaponTimer >= _weaponCoolDown)
             {
                 _weaponTimer = _weaponCoolDown;
             }
-            _weaponText.text = (int)(_weaponTimer*100) + " / " + 100;
-            _weaponBar.value = (_weaponTimer*100);
-            
-            if (Input.GetMouseButtonDown(0) && _weaponTimer >= _weaponCoolDown)
+            updateTextBars(_weaponBar, _weaponText, _weaponTimer);
+
+            if (_shieldTimer >= _shieldCoolDown)
+            {
+                _shieldTimer = _shieldCoolDown;
+            }
+            updateTextBars(_shieldBar, _shieldText, _shieldTimer);
+
+            if (Input.GetMouseButtonDown(0) && _weaponTimer >= _weaponCoolDown && !_shieldActive)
             {
                 Debug.Log("LeftMouseButtonPressed");
                 Shoot();
                 _particleSystemToEnable.Play();
                 AudioHelper.PlayClip2D(_weaponNoise, 0.25f);
                 _weaponTimer = 0f;
-                _weaponText.text = (int)(_weaponTimer * 100) + " / " + 100;
-                _weaponBar.value = (_weaponTimer * 100);
+                updateTextBars(_weaponBar, _weaponText, _weaponTimer);
             }
+
+            if (Input.GetMouseButtonDown(1) && _shieldTimer >= _shieldCoolDown)
+            {
+                Debug.Log("RightMouseButtonPressed");
+                Shield();
+                //_particleSystemToEnable.Play();
+                //AudioHelper.PlayClip2D(_weaponNoise, 0.25f);
+                _shieldTimer = 0f;
+                updateTextBars(_shieldBar, _shieldText, _shieldTimer);
+            }
+
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
             if (isGrounded && velocity.y < 0)
@@ -116,6 +141,12 @@ public class PlayerController : MonoBehaviour
             controller.Move(velocity * Time.deltaTime);
         } 
     }
+
+    void updateTextBars(Slider sliderToUpdate, Text textToUpdate, float valueToUpdate)
+    {
+        textToUpdate.text = (int)(valueToUpdate * sliderToUpdate.maxValue) + " / " + sliderToUpdate.maxValue;
+        sliderToUpdate.value = (valueToUpdate * 100);
+    }
     void Shoot()
     {
         //calculate direction
@@ -140,8 +171,23 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Miss.");
         }
     }
+
+    void Shield()
+    {
+        _shieldObject.SetActive(true);
+        _shieldActive = true;
+        DelayHelper.DelayAction(this, InvertShield, 0.5f);        
+    }
+
+    void InvertShield()
+    {
+        _shieldObject.SetActive(false);
+        _shieldActive = false;
+    }
+
     public void DealDamage(float damageAmount)
     {
+        _level01Controller.ResetMultiplier();
         if(currentPlayerHealth > 0 && currentPlayerHealth > damageAmount)
         {
             currentPlayerHealth -= damageAmount;
@@ -166,14 +212,6 @@ public class PlayerController : MonoBehaviour
     public void InvertPausedBool()
     {
         paused = !paused;
-        if (paused)
-        {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
     }
     public bool GetPause()
     {
