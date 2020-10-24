@@ -9,6 +9,7 @@ TagManager:
   - EnemyProjectile
   - Shield
   - Boss
+  - BossSubWeapon
   layers:
   - Default
   - TransparentFX

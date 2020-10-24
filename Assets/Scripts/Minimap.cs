@@ -12,8 +12,11 @@ public class Minimap : MonoBehaviour
     public float _minZoom = 5f;
     public float _currentZoom = 15f;
 
+    private float _minCameraDistance;
+
     public void Start()
     {
+        _minCameraDistance = transform.position.y;
         camera.orthographicSize = PlayerPrefs.GetFloat("CurrentZoom");
         ZoomParameterCheck();
     }
@@ -21,7 +24,7 @@ public class Minimap : MonoBehaviour
     void LateUpdate()
     {
         Vector3 newPosition = player.position;
-        newPosition.y = transform.position.y;
+        newPosition.y += _minCameraDistance;
         transform.position = newPosition;
     }
 

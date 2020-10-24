@@ -18,18 +18,23 @@ public class EnemyController : MonoBehaviour
     [SerializeField] int _maximumHealth = 5;
     [SerializeField] int _currentHealth;
     [SerializeField] int _scoreToAdd = 100;
+    [SerializeField] float spawnDistance = 2f;
 
     float _fireTimer = 3f;
     float _timeSinceLastFire = 0f;
     private ParticleSystem particleSystem2;
-    
+
     private void Awake()
     {
         _timeSinceLastFire = _fireTimer * 0.65f;
         _currentHealth = _maximumHealth;
-        if(this.gameObject.CompareTag("Boss"))
+        if (this.gameObject.CompareTag("Boss"))
         {
             particleSystem2 = Instantiate(_particleSystemToEnable);
+        }
+        if (this.gameObject.CompareTag("BossSubWeapon"))
+        {
+            spawnDistance = 10f;
         }
         
     }
@@ -61,8 +66,7 @@ public class EnemyController : MonoBehaviour
     }
 
     private void SpawnBullet()
-    {
-        float spawnDistance = 2;
+    { 
         Vector3 enemyPosition = transform.position;
         Vector3 spawnPosition = enemyPosition + transform.forward * spawnDistance;
 
@@ -77,7 +81,6 @@ public class EnemyController : MonoBehaviour
 
     private void SpawnBullet(Transform spawnPos1, Transform spawnPos2)
     {
-        float spawnDistance = 2;
         Vector3 enemyPosition = transform.position;
         Vector3 spawnPosition = spawnPos1.position + transform.forward * spawnDistance;
         Vector3 spawnPosition2 = spawnPos2.position + transform.forward * spawnDistance;
